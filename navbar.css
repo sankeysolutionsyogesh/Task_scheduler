@@ -1,0 +1,39 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Basic styles for the navigation bar */
+.nav_bar {
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    height: 50px;
+  }
+  
+  .title h1{
+    padding-right: 20px;
+    padding-left: 20px;
+    
+    
+  }
+  /* Styling for the individual bars */
+  .add_bar {
+    display: flex;
+    background-color: #ff5722;
+    height: 100%;
+    cursor: pointer;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .view_bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #7cd87f;
+    height: 100%;
+    cursor: pointer;
+    flex: 1;
+  }
