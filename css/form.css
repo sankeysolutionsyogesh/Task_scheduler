@@ -1,55 +1,32 @@
-label {
-    align-self: flex-start;
-  }
-  
 
-  input[type=text],
-  select,
-  input[type=date] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
+input[type=text],
+select,
+input[type=date] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
 
-  /* input[type=submit]:hover,
-  input[type=button]:hover {
-    background-color: #0de48aa8;
-  }
-   */
-  
-  /* Default styles for the buttons */
-  .submit-container {
-    display: flex;
-    flex-direction: row;
-      gap: 50px;
-  }
-  
-  /* Responsive styles for smaller screens */
-  @media only screen and (max-width: 768px) {
-    .submit-container {
-      flex-direction: column;
-      gap: 0px;
-      /* flex-wrap: nowrap; */
-  
-    }
-  
-    .submit-container input[type="submit"],
-    .submit-container input[type="button"] {
-      padding: 8px 16px;
-      font-size: 14px;
-    }
-  
-    .form-data {
-  
-      padding-left: 20px;
-      padding-right: 20px;
-  
-    }
-  
-  
-  }
+#add_task {
+  /* height: 70vh; */
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+#form_subtaskname {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#new_form_subtaskname {
+  margin-top: 20px;
+}
