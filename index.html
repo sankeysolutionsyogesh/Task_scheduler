@@ -1,11 +1,367 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
     <title>Document</title>
-</head>
-<body>
-    <h1>Task Planner</h1>
-</body>
+    <link rel="stylesheet" href="./css/navbar.css" />
+    <link rel="stylesheet" href="./css/form.css" />
+    <link rel="stylesheet" href="./css/modal.css" />
+    <link rel="stylesheet" href="./css/accordion.css" />
+    <link rel="stylesheet" href="./css/button.css" />
+    <link rel="stylesheet" href="./css/search.css" />
+
+    <!-- Icon -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap"
+      rel="stylesheet"
+    />
+ 
+  </head>
+
+  <body>
+    <div class="nav_bar">
+      <div class="title">
+        <h1>Task Planner</h1>
+      </div>
+      <div class="add_bar"><h3>Add new Task</h3></div>
+      <div class="view_bar"><h3>View all Task</h3></div>
+    </div>
+
+    <div id="add_task">
+      <!-- Main Task  -->
+      <form id="form_taskname" onsubmit="prevent(event)">
+        <div>
+          <label for="lname">Task Name:</label>
+          <input
+            type="text"
+            id="task_name"
+            name="task_name"
+            placeholder="Enter Task Name"
+            required
+          />
+        </div>
+        <div>
+          <input
+            type="submit"
+            onclick="addSubTask()"
+            id="add_subtask_button"
+            value="Add Sub task"
+          />
+
+          <input
+            type="submit"
+            id="addTask_without_Subtask"
+            onclick="addTaskwithoutSubtask()"
+            value="Add task"
+          />
+
+          <input
+            type="button"
+            onclick="clearOutput()"
+            value="Reset Task"
+            class="danger_color"
+          />
+        </div>
+      </form>
+      <!-- Sub Task -->
+      <form
+        id="form_subtaskname"
+        style="display: none"
+        onsubmit="prevent(event)"
+      >
+        <div>
+          <label for="lname">Sub_task Name:</label>
+          <input
+            type="text"
+            id="sub_task_name"
+            name="sub_task_name"
+            placeholder="Enter Sub_Task Name"
+            required
+          />
+        </div>
+        <div>
+          <label for="start_date">Start Date:</label>
+          <input
+            type="date"
+            id="start_date"
+            onchange="enableEndDate('start_date', 'end_date')"
+            required
+          />
+        </div>
+        <div>
+          <label for="end_date">End Date:</label>
+          <input
+            type="date"
+            id="end_date"
+            disabled
+            onchange="enableStatusDropdown('end_date','status')"
+            required
+          />
+        </div>
+        <div>
+          <label for="status">Status:</label>
+          <select id="status" disabled required>
+            <option value="">Select Status</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+            <option value="Due Passed">Due Passed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+        <div>
+          <input
+            type="submit"
+            onclick="addNewSubTask()"
+            value="Add more SubTask"
+            id="add_more_Subtask"
+          />
+        </div>
+      </form>
+      <div id="output"></div>
+    </div>
+
+    <div id="view_task" style="display: none">
+      <div class="search_options">
+        <div id="search_option">
+          <select id="search_by" required>
+            <option value="">Search By</option>
+            <option value="Task_Name">Task Name</option>
+            <option value="SubTask_Name">SubTask Name</option>
+            <option value="Start_Date">Start Date</option>
+            <option value="End_Date">End Date</option>
+          </select>
+        </div>
+        <div id="search_textbox">
+          <input
+            type="text"
+            id="search_box"
+            name="search_box"
+            placeholder="Select options in dropdown to search"
+            required
+            disabled
+          />
+        </div>
+
+        <div id="search_date">
+          <input type="date" id="search_by_Date" required />
+        </div>
+        <div>
+          <input
+            type="button"
+            onclick="resetSearch()"
+            value="Reset Search"
+            class="danger_color"
+          />
+        </div>
+      </div>
+      <div id="accordion-container"></div>
+      <div id="NoResultView" style="display: none; text-align: center">
+        <h1>No result found!</h1>
+      </div>
+      <div id="Loading" style="display: none; text-align: center">
+        <h1>Loading ...</h1>
+      </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal" id="deleteModal">
+      <div class="modal-content">
+        <!-- <span class="close-btn" id="closeModalBtn">&times;</span> -->
+        <h2>Delete SubTask</h2>
+        <div>
+          <h3 id="DeleteSubtaskID">Task Name -</h3>
+          <h3 id="DeleteSubtaskName">Sub Task -</h3>
+        </div>
+        <div>
+          <input
+            type="button"
+            onclick="ConfirmDelete()"
+            value="Delete"
+            class="danger_color"
+          />
+          <input
+            type="button"
+            onclick="CancelDelete()"
+            value="Cancel"
+            class="cancel_button"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Single SubTask Modal -->
+    <div class="modal" id="addTaskModal">
+      <div class="modal-content edit-Modal">
+        <!-- <span class="close-btn" id="closeModalBtn">&times;</span> -->
+        <div>
+          <h2 id="addNewTaskName">Task Name -</h2>
+          <h3 id="addNewSubTaskID">Sub Task ID -</h3>
+        </div>
+        <form id="new_form_subtaskname" onsubmit="prevent(event)">
+          <div>
+            <label for="new_sub_task_name">Sub_task Name:</label>
+            <input
+              type="text"
+              id="new_sub_task_name"
+              name="new_sub_task_name"
+              placeholder="Enter Sub_Task Name"
+              required
+            />
+          </div>
+          <div>
+            <label for="new_start_date">Start Date:</label>
+            <input
+              type="date"
+              id="new_start_date"
+              onchange="enableEndDate('new_start_date', 'new_end_date')"
+              required
+            />
+          </div>
+          <div>
+            <label for="new_end_date">End Date:</label>
+            <input
+              type="date"
+              id="new_end_date"
+              disabled
+              onchange="enableStatusDropdown('new_end_date','new_status')"
+              required
+            />
+          </div>
+          <div>
+            <label for="new_status">Status:</label>
+            <select id="new_status" disabled required>
+              <option value="">Select Status</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+              <option value="Due Passed">Due Passed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div>
+            <input
+              type="submit"
+              onclick="addNewSingleSubTask()"
+              value="Add SubTask"
+              class="success_color"
+            />
+
+            <input
+              type="button"
+              onclick="CancelAddModal()"
+              value="Cancel"
+              class="cancel_button"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Edit Modal -->
+    <div class="modal" id="editModal">
+      <div class="modal-content edit-Modal">
+        <!-- <span class="close-btn" id="closeModalBtn">&times;</span> -->
+
+        <form id="form_subtaskname" onsubmit="prevent(event)">
+          <h2>Edit SubTask</h2>
+          <div>
+            <label for="lname">Sub_task Name:</label>
+            <input
+              type="text"
+              id="edit_sub_taskname"
+              name="sub_task_name"
+              placeholder="Enter Sub_Task Name"
+              required
+            />
+          </div>
+          <div>
+            <label for="start_date">Start Date:</label>
+            <input
+              type="date"
+              id="edit_start_date"
+              onchange="checkEditendDate(null);"
+              required
+            />
+          </div>
+          <div>
+            <label for="end_date">End Date:</label>
+            <input
+              type="date"
+              id="edit_end_date"
+              onchange="enableStatusDropdown('edit_end_date','edit_status')"
+              required
+            />
+          </div>
+          <div>
+            <label for="edit_status">Status:</label>
+            <select id="edit_status" required>
+              <option value="">Select Status</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+              <option value="Due Passed">Due Passed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div>
+            <input
+              type="submit"
+              onclick="editSubTask()"
+              value="Edit Task"
+              class="success_color"
+            />
+            <input
+              type="button"
+              onclick="CancelEdit()"
+              value="Cancel"
+              class="cancel_button"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    //Global array of objects for TaskPlanner
+    var TaskPlanner = [
+      {
+        taskId: 1,
+        taskName: "Buy groceries",
+        subTasks: [
+          {
+            s_id: 0,
+            s_title: "Milk",
+            s_status: "Due Passed",
+            s_startDate: "2023-07-26",
+            s_endDate: "2023-07-30",
+          },
+          {
+            s_id: 1,
+            s_title: "Bread",
+            s_status: "Cancelled",
+            s_startDate: "2023-07-23",
+            s_endDate: "2023-07-25",
+          },
+        ],
+      },
+    ];
+
+
+  </script>
+  <script src="./js/editTask.js"></script>
+  <script src="./js/navBar.js"></script>
+  <script src="./js/calendar.js"></script>
+  <script src="./js/addTask.js"></script>
+  <script src="./js/deleteTask.js"></script>
+  <script src="./js/addSingleSubTask.js"></script>
+  <script src="./js/accordion.js"></script>
+  <script src="./js/searchOperation.js"></script>
+  <!-- moment.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
 </html>

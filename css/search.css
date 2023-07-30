@@ -1,0 +1,8 @@
+.search_options {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#search_date {
+    display: "none";
+}
