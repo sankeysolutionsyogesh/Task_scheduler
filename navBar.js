@@ -25,6 +25,8 @@ function handleAddClick() {
       onPage = "view_task";
   
     //   await getEmpDetails();
+    createAccordion();
+
     }
   }
   
