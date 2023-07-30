@@ -5,11 +5,13 @@ function removeAccordion() {
     }
   }
 
-  function createAccordion() {
+  function createAccordion(Result) {
     removeAccordion();
+    console.log("Result-", Result)
     const accordionContainer = document.getElementById("accordion-container");
 
-    TaskPlanner.forEach((task) => {
+
+    Result.forEach((task) => {
       const accordionItem = document.createElement("div");
       accordionItem.className = "accordion-item";
 
@@ -26,7 +28,7 @@ function removeAccordion() {
       addButton.className = "add-button";
 
       addButton.addEventListener("click", () => {
-        AddModal(task.taskId,task.taskName);
+        AddModal(task,task.taskName);
       });
 
       // Append the task name and "Add" button elements to the header

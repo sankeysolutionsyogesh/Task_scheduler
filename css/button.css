@@ -1,0 +1,47 @@
+input[type=submit],
+input[type=button] {
+    width: auto;
+    /* background-color: #0de48b; */
+    /* color: rgb(8, 0, 0); */
+    /* color: white; */
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#add_subtask_button {
+    background-color: #4caf50;
+    color: white;
+
+}
+
+#addTask_without_Subtask {
+    background-color: #3498db;
+    color: white;
+
+}
+
+.cancel_button{
+    background-color: #ccc;
+    color: black;
+}
+
+.danger_color{
+    background-color: #e74c3c;
+    color: white;
+}
+
+.success_color{
+    background-color: #2ecc71;
+}
+
+#add_more_Subtask {
+    background-color: #e73cc2;
+    color: white;
+
+}

@@ -4,8 +4,15 @@ var AddNewSingleSubTaskName = null;
 
 function AddModal(taskId, TaskName) {
   console.log("ID", taskId);
-  AddNewSingleSubTask = taskId;
+  AddNewSingleSubTask = taskId.taskId;
   AddNewSingleSubTaskName = TaskName;
+
+  const addNewTaskName = document.getElementById("addNewTaskName");
+  addNewTaskName.innerHTML = "Task Name - " + AddNewSingleSubTaskName;
+
+  const addNewSubTaskID = document.getElementById("addNewSubTaskID");
+  addNewSubTaskID.innerHTML = "SubTask Number  - " + (taskId.subTasks.length + 1);
+
   document.getElementById("addTaskModal").style.display = "block";
 }
 
@@ -20,6 +27,11 @@ function addNewSingleSubTask() {
   const startDate = document.getElementById("new_start_date").value;
   const endDate = document.getElementById("new_end_date").value;
   const status = document.getElementById("new_status").value;
+
+  if (subTaskName.trim() === "" || startDate.trim() === "" || endDate.trim() === "" || status.trim() === "") {
+    return false;
+  }
+  
 
   // Create the new subtask object
   const newSubTask = {
@@ -41,7 +53,7 @@ function addNewSingleSubTask() {
   } else {
     alert(`Task with ID ${AddNewSingleSubTask} not found.`)
   }
-  createAccordion() 
+  createAccordion(TaskPlanner) 
   CancelAddModal() 
 //   console.log(TaskPlanner)
 }

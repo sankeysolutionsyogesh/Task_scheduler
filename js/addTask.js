@@ -1,3 +1,5 @@
+var Temp_TaskPlanner = [];
+
 function addSubTask() {
   let isDuplicate = false;
   const Tasknamevalue = document.getElementById("task_name");
@@ -16,19 +18,20 @@ function addSubTask() {
   TaskPlanner.forEach((obj) => {
     if (obj.taskName == taskName) {
       isDuplicate = true;
+      alert("The task has been already created");
     }
   });
 
   if (!isDuplicate) {
-    TaskPlanner.push(newTask);
+    Temp_TaskPlanner.push(newTask);
+    const addTaskButton = document.getElementById("add_subtask_button");
+    addTaskButton.style.display = "none";
+    const formSubTaskname = document.getElementById("form_subtaskname");
+    formSubTaskname.style.display = "";
+    return true;
   }
 
-  console.log(TaskPlanner);
-  const addTaskButton = document.getElementById("add_subtask_button");
-  addTaskButton.style.display = "none";
-  const formSubTaskname = document.getElementById("form_subtaskname");
-  formSubTaskname.style.display = "";
-  return true;
+  return false;
 }
 
 function addTaskwithoutSubtask() {
@@ -41,7 +44,7 @@ function addTaskwithoutSubtask() {
   }
 
   const newTask = {
-    Taskid: TaskPlanner.length + 1,
+    taskId: TaskPlanner.length + 1,
     taskName: taskName,
     subTasks: [],
   };
@@ -49,20 +52,23 @@ function addTaskwithoutSubtask() {
   TaskPlanner.forEach((obj) => {
     if (obj.taskName == taskName) {
       isDuplicate = true;
+      alert("The task has been already created");
     }
   });
 
   if (!isDuplicate) {
-    TaskPlanner.push(newTask);
+    if (Temp_TaskPlanner.length != 0) {
+      console.log("Result ", Temp_TaskPlanner, "Other ", TaskPlanner);
+      Temp_TaskPlanner.forEach((obj) => TaskPlanner.push(obj));
+    } else {
+      TaskPlanner.push(newTask);
+    }
+    alert("Added new Task");
+    clearOutput();
+    handleViewClick();
   }
 
-  console.log(TaskPlanner);
-
-  // Clear the input field after adding the task
-  alert("Added new Task");
-  //   Tasknamevalue.value = "";
-  clearOutput();
-  handleViewClick();
+  return false;
 }
 
 function addNewSubTask() {
@@ -71,10 +77,6 @@ function addNewSubTask() {
   const subTaskNameInput = document.getElementById("sub_task_name");
   const subTaskName = subTaskNameInput.value.trim();
 
-  if (subTaskName === "") {
-    return;
-  }
-
   const startDateInput = document.getElementById("start_date");
   const endDateInput = document.getElementById("end_date");
   const statusDropdown = document.getElementById("status");
@@ -82,21 +84,33 @@ function addNewSubTask() {
   const startDate = startDateInput.value;
   const endDate = endDateInput.value;
   const status = statusDropdown.value;
-  const selectedTaskIndex = TaskPlanner.length - 1;
+  const selectedTaskIndex = Temp_TaskPlanner.length - 1;
+
+  if (
+    subTaskName === "" ||
+    startDate === "" ||
+    endDate === "" ||
+    status === ""
+  ) {
+    return;
+  }
+
   const newSubTask = {
-    s_id: TaskPlanner[selectedTaskIndex].subTasks.length + 1,
+    s_id: Temp_TaskPlanner[0].subTasks.length + 1,
     s_title: subTaskName,
     s_status: status,
     s_startDate: startDate,
     s_endDate: endDate,
   };
 
-  TaskPlanner[selectedTaskIndex].subTasks.push(newSubTask);
+  Temp_TaskPlanner[0].subTasks.push(newSubTask);
   addRow(newSubTask);
-  subTaskNameInput.value = "";
-  startDateInput.value = "";
-  endDateInput.value = "";
-  statusDropdown.selectedIndex = 0;
+  var SubTaskformData = document.getElementById("form_subtaskname");
+  SubTaskformData.reset();
+  const end_date = document.getElementById("end_date");
+  end_date.disabled = true;
+  const status_dropdown = document.getElementById("status");
+  status_dropdown.disabled = true;
 }
 
 function addRow(newSubTask) {
@@ -121,6 +135,7 @@ function clearOutput() {
     outputDiv.removeChild(outputDiv.firstChild);
   }
 
+  Temp_TaskPlanner = [];
   var TaskformData = document.getElementById("form_taskname");
   TaskformData.reset();
 

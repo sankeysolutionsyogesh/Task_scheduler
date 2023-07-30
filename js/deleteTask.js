@@ -31,6 +31,6 @@ function ConfirmDelete() {
     }
   });
 
-  createAccordion();
+  createAccordion(TaskPlanner);
   CancelDelete();
 }

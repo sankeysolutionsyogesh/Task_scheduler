@@ -11,6 +11,8 @@ function handleAddClick() {
   
       viewTask.style.display = "none";
       onPage = "add_task";
+
+      clearOutput()
     }
   }
   
@@ -24,8 +26,8 @@ function handleAddClick() {
       viewTask.style.display = "";
       onPage = "view_task";
   
-    //   await getEmpDetails();
-    createAccordion();
+    // showNoResults is called her so that noresult or loading should be none at starting
+    resetSearch()
 
     }
   }

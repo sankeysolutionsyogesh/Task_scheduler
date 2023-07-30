@@ -2,9 +2,11 @@
 <html lang="en">
   <head>
     <title>Document</title>
-    <link rel="stylesheet" href="navbar.css" />
-    <link rel="stylesheet" href="modal.css" />
-    <link rel="stylesheet" href="accordion.css" />
+    <link rel="stylesheet" href="./css/navbar.css" />
+    <link rel="stylesheet" href="./css/form.css" />
+    <link rel="stylesheet" href="./css/modal.css" />
+    <link rel="stylesheet" href="./css/accordion.css" />
+    <link rel="stylesheet" href="./css/button.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -27,8 +29,38 @@
       body {
         font-family: "Ubuntu", sans-serif;
       }
+
+      #add_task {
+        /* height: 70vh; */
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+      }
+
+      #form_subtaskname {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      #new_form_subtaskname {
+        margin-top: 20px;
+      }
+
+      .search_options {
+        display: flex;
+        justify-content: space-evenly;
+      }
+
+      #search_date {
+        display: "none";
+      }
     </style>
   </head>
+
   <body>
     <div class="nav_bar">
       <div class="title">
@@ -41,135 +73,228 @@
     <div id="add_task">
       <!-- Main Task  -->
       <form id="form_taskname" onsubmit="prevent(event)">
-        <label for="lname">Task Name:</label>
-        <input
-          type="text"
-          id="task_name"
-          name="task_name"
-          placeholder="Enter Task Name"
-          required
-        />
-        <button type="submit" onclick="addSubTask();" id="add_subtask_button">
-          Add Sub task
-        </button>
-        <button type="submit" onclick="addTaskwithoutSubtask();">
-          Add task
-        </button>
+        <div>
+          <label for="lname">Task Name:</label>
+          <input
+            type="text"
+            id="task_name"
+            name="task_name"
+            placeholder="Enter Task Name"
+            required
+          />
+        </div>
+        <div>
+          <input
+            type="submit"
+            onclick="addSubTask()"
+            id="add_subtask_button"
+            value="Add Sub task"
+          />
+
+          <input
+            type="submit"
+            id="addTask_without_Subtask"
+            onclick="addTaskwithoutSubtask()"
+            value="Add task"
+          />
+
+          <input
+            type="button"
+            onclick="clearOutput()"
+            value="Reset Task"
+            class="danger_color"
+          />
+        </div>
       </form>
       <!-- Sub Task -->
-
       <form
         id="form_subtaskname"
         style="display: none"
         onsubmit="prevent(event)"
       >
-        <label for="lname">Sub_task Name:</label>
-        <input
-          type="text"
-          id="sub_task_name"
-          name="sub_task_name"
-          placeholder="Enter Sub_Task Name"
-          required
-        />
-
-        <label for="start_date">Start Date:</label>
-        <input
-          type="date"
-          id="start_date"
-          onchange="enableEndDate('start_date', 'end_date')"
-          required
-        />
-
-        <label for="end_date">End Date:</label>
-        <input
-          type="date"
-          id="end_date"
-          disabled
-          onchange="enableStatusDropdown('end_date','status')"
-          required
-        />
-
-        <label for="status">Status:</label>
-        <select id="status" disabled required>
-          <option value="">Select Status</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Completed">Completed</option>
-          <option value="Due Passed">Due Passed</option>
-          <option value="Cancelled">Cancelled</option>
-        </select>
-
-        <button type="submit" onclick="addNewSubTask()">
-          Add more SubTask
-        </button>
-      </form>
-      <div id="output"></div>
-    </div>
-
-    <div id="view_task" style="display: none">
-      <div id="accordion-container"></div>
-    </div>
-
-    <!-- Delete Modal -->
-    <div class="modal" id="deleteModal">
-      <div class="modal-content">
-        <!-- <span class="close-btn" id="closeModalBtn">&times;</span> -->
-        <h2>Delete Employee</h2>
-
-        <h3 id="DeleteSubtaskID">Task Name -</h3>
-        <h3 id="DeleteSubtaskName">Sub Task -</h3>
-
-        <button onclick="ConfirmDelete()">Delete</button>
-        <button onclick="CancelDelete()">Cancel</button>
-      </div>
-    </div>
-    <!-- Add Single SubTask Modal -->
-    <div class="modal" id="addTaskModal">
-      <div class="modal-content">
-        <!-- <span class="close-btn" id="closeModalBtn">&times;</span> -->
-        <h2>Task Name -</h2>
-
-        <!-- Sub Task -->
-        <h3 id="addNewSubTaskID">Sub Task ID -</h3>
-        <form id="new_form_subtaskname" onsubmit="prevent(event)">
-          <label for="new_sub_task_name">Sub_task Name:</label>
+        <div>
+          <label for="lname">Sub_task Name:</label>
           <input
             type="text"
-            id="new_sub_task_name"
-            name="new_sub_task_name"
+            id="sub_task_name"
+            name="sub_task_name"
             placeholder="Enter Sub_Task Name"
             required
           />
-
-          <label for="new_start_date">Start Date:</label>
+        </div>
+        <div>
+          <label for="start_date">Start Date:</label>
           <input
             type="date"
-            id="new_start_date"
-            onchange="enableEndDate('new_start_date', 'new_end_date')"
+            id="start_date"
+            onchange="enableEndDate('start_date', 'end_date')"
             required
           />
-
-          <label for="new_end_date">End Date:</label>
+        </div>
+        <div>
+          <label for="end_date">End Date:</label>
           <input
             type="date"
-            id="new_end_date"
+            id="end_date"
             disabled
-            onchange="enableStatusDropdown('new_end_date','new_status')"
+            onchange="enableStatusDropdown('end_date','status')"
             required
           />
-
-          <label for="new_status">Status:</label>
-          <select id="new_status" disabled required>
+        </div>
+        <div>
+          <label for="status">Status:</label>
+          <select id="status" disabled required>
             <option value="">Select Status</option>
             <option value="In Progress">In Progress</option>
             <option value="Completed">Completed</option>
             <option value="Due Passed">Due Passed</option>
             <option value="Cancelled">Cancelled</option>
           </select>
+        </div>
+        <div>
+          <input
+            type="submit"
+            onclick="addNewSubTask()"
+            value="Add more SubTask"
+            id="add_more_Subtask"
+          />
+        </div>
+      </form>
+      <div id="output"></div>
+    </div>
 
-          <button type="submit" onclick="addNewSingleSubTask()">
-            Add SubTask
-          </button>
-          <button onclick="CancelAddModal()">Cancel</button>
+    <div id="view_task" style="display: none">
+      <div class="search_options">
+        <div id="search_option">
+          <select id="search_by" required>
+            <option value="">Search By</option>
+            <option value="Task_Name">Task Name</option>
+            <option value="SubTask_Name">SubTask Name</option>
+            <option value="Start_Date">Start Date</option>
+            <option value="End_Date">End Date</option>
+          </select>
+        </div>
+        <div id="search_textbox">
+          <input
+            type="text"
+            id="search_box"
+            name="search_box"
+            placeholder="Select options in dropdown to search"
+            required
+            disabled
+          />
+        </div>
+
+        <div id="search_date">
+          <input type="date" id="search_by_Date" required />
+        </div>
+        <div>
+          <input
+            type="button"
+            onclick="resetSearch()"
+            value="Reset Search"
+            class="danger_color"
+          />
+        </div>
+      </div>
+      <div id="accordion-container"></div>
+      <div id="NoResultView" style="display: none; text-align: center">
+        <h1>No result found!</h1>
+      </div>
+      <div id="Loading" style="display: none; text-align: center">
+        <h1>Loading ...</h1>
+      </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal" id="deleteModal">
+      <div class="modal-content">
+        <!-- <span class="close-btn" id="closeModalBtn">&times;</span> -->
+        <h2>Delete SubTask</h2>
+        <div>
+          <h3 id="DeleteSubtaskID">Task Name -</h3>
+          <h3 id="DeleteSubtaskName">Sub Task -</h3>
+        </div>
+        <div>
+          <input
+            type="button"
+            onclick="ConfirmDelete()"
+            value="Delete"
+            class="danger_color"
+          />
+          <input
+            type="button"
+            onclick="CancelDelete()"
+            value="Cancel"
+            class="cancel_button"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Single SubTask Modal -->
+    <div class="modal" id="addTaskModal">
+      <div class="modal-content edit-Modal">
+        <!-- <span class="close-btn" id="closeModalBtn">&times;</span> -->
+        <div>
+          <h2 id="addNewTaskName">Task Name -</h2>
+          <h3 id="addNewSubTaskID">Sub Task ID -</h3>
+        </div>
+        <form id="new_form_subtaskname" onsubmit="prevent(event)">
+          <div>
+            <label for="new_sub_task_name">Sub_task Name:</label>
+            <input
+              type="text"
+              id="new_sub_task_name"
+              name="new_sub_task_name"
+              placeholder="Enter Sub_Task Name"
+              required
+            />
+          </div>
+          <div>
+            <label for="new_start_date">Start Date:</label>
+            <input
+              type="date"
+              id="new_start_date"
+              onchange="enableEndDate('new_start_date', 'new_end_date')"
+              required
+            />
+          </div>
+          <div>
+            <label for="new_end_date">End Date:</label>
+            <input
+              type="date"
+              id="new_end_date"
+              disabled
+              onchange="enableStatusDropdown('new_end_date','new_status')"
+              required
+            />
+          </div>
+          <div>
+            <label for="new_status">Status:</label>
+            <select id="new_status" disabled required>
+              <option value="">Select Status</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+              <option value="Due Passed">Due Passed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div>
+            <input
+              type="submit"
+              onclick="addNewSingleSubTask()"
+              value="Add SubTask"
+              class="success_color"
+            />
+
+            <input
+              type="button"
+              onclick="CancelAddModal()"
+              value="Cancel"
+              class="cancel_button"
+            />
+          </div>
         </form>
       </div>
     </div>
@@ -180,42 +305,58 @@
 
         <form id="form_subtaskname" onsubmit="prevent(event)">
           <h2>Edit SubTask</h2>
-          <label for="lname">Sub_task Name:</label>
-          <input
-            type="text"
-            id="edit_sub_taskname"
-            name="sub_task_name"
-            placeholder="Enter Sub_Task Name"
-            required
-          />
-
-          <label for="start_date">Start Date:</label>
-          <input
-            type="date"
-            id="edit_start_date"
-            onchange="checkEditendDate(null);"
-            required
-          />
-
-          <label for="end_date">End Date:</label>
-          <input
-            type="date"
-            id="edit_end_date"
-            onchange="enableStatusDropdown('edit_end_date','edit_status')"
-            required
-          />
-
-          <label for="edit_status">Status:</label>
-          <select id="edit_status" required>
-            <option value="">Select Status</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
-            <option value="Due Passed">Due Passed</option>
-            <option value="Cancelled">Cancelled</option>
-          </select>
-
-          <button type="submit" onclick="editSubTask()">Edit Task</button>
-          <button type="button" onclick="CancelEdit()">Cancel</button>
+          <div>
+            <label for="lname">Sub_task Name:</label>
+            <input
+              type="text"
+              id="edit_sub_taskname"
+              name="sub_task_name"
+              placeholder="Enter Sub_Task Name"
+              required
+            />
+          </div>
+          <div>
+            <label for="start_date">Start Date:</label>
+            <input
+              type="date"
+              id="edit_start_date"
+              onchange="checkEditendDate(null);"
+              required
+            />
+          </div>
+          <div>
+            <label for="end_date">End Date:</label>
+            <input
+              type="date"
+              id="edit_end_date"
+              onchange="enableStatusDropdown('edit_end_date','edit_status')"
+              required
+            />
+          </div>
+          <div>
+            <label for="edit_status">Status:</label>
+            <select id="edit_status" required>
+              <option value="">Select Status</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+              <option value="Due Passed">Due Passed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div>
+            <input
+              type="submit"
+              onclick="editSubTask()"
+              value="Edit Task"
+              class="success_color"
+            />
+            <input
+              type="button"
+              onclick="CancelEdit()"
+              value="Cancel"
+              class="cancel_button"
+            />
+          </div>
         </form>
       </div>
     </div>
@@ -231,7 +372,7 @@
             s_id: 0,
             s_title: "Milk",
             s_status: "Due Passed",
-            s_startDate: "2023-07-23",
+            s_startDate: "2023-07-26",
             s_endDate: "2023-07-30",
           },
           {
@@ -245,16 +386,183 @@
       },
     ];
 
-    
     // Call the function to create the accordion when the page loads
   </script>
-  <script src="editTask.js"></script>
-  <script src="navBar.js"></script>
-  <script src="calendar.js"></script>
-  <script src="addTask.js"></script>
-  <script src="deleteTask.js"></script>
-  <script src="addSingleSubTask.js"></script>
-  <script src="accordion.js"></script>
 
+  <script>
+    let delayTimer;
+    var searchOption = "";
+    const searchBySelect = document.getElementById("search_by");
+    const searchBox = document.getElementById("search_box");
+    const searchByDate = document.getElementById("search_by_Date");
 
+    //Divs
+    const searchDate = document.getElementById("search_date");
+    const searchTextbox = document.getElementById("search_textbox");
+
+    searchBySelect.addEventListener("change", function (event) {
+      const selectedValue = event.target.value;
+      console.log("Selected Value:", selectedValue);
+      searchOption = selectedValue;
+      if (selectedValue != "") {
+        if (selectedValue === "Start_Date" || selectedValue === "End_Date") {
+          searchDate.style.display = "";
+          searchTextbox.style.display = "none";
+          searchByDate.value = null;
+        } else {
+          searchDate.style.display = "none";
+          searchTextbox.style.display = "";
+
+          searchBox.disabled = false;
+          searchBox.placeholder = "Search for " + selectedValue;
+          searchBox.value = "";
+        }
+      } else {
+        resetSearch()
+      }
+    });
+
+    searchByDate.addEventListener("change", function (event) {
+      showNoResults(false);
+      const dateis = event.target.value;
+      console.log("asdlkfmnds", dateis);
+      const Results = searchFunction(searchOption, dateis);
+      if (Results.length > 0) {
+        const Loading = document.getElementById("Loading");
+        Loading.style.display = "none";
+        createAccordion(Results);
+      } else {
+        showNoResults(true);
+      }
+    });
+
+    searchBox.addEventListener("keyup", function (event) {
+      showNoResults(false);
+      clearTimeout(delayTimer);
+      const inputValue = event.target.value.trim();
+
+      delayTimer = setTimeout(function () {
+        if (inputValue.length == 0) {
+          const Loading = document.getElementById("Loading");
+          Loading.style.display = "none";
+          createAccordion(TaskPlanner);
+        } else {
+          const Results = searchFunction(searchOption, inputValue);
+          if (Results.length > 0) {
+            const Loading = document.getElementById("Loading");
+            Loading.style.display = "none";
+            createAccordion(Results);
+          } else {
+            showNoResults(true);
+          }
+        }
+      }, 1000);
+    });
+
+    function showNoResults(data) {
+      removeAccordion();
+      const NoResultView = document.getElementById("NoResultView");
+      const Loading = document.getElementById("Loading");
+
+      if (data === "both") {
+        Loading.style.display = "none";
+        NoResultView.style.display = "none";
+      } else {
+        if (data) {
+          NoResultView.style.display = "";
+          Loading.style.display = "none";
+        } else {
+          NoResultView.style.display = "none";
+          Loading.style.display = "";
+        }
+      }
+    }
+
+    function searchFunction(options, searchTerm) {
+      //   console.log("date", searchOption, inputData);
+      // Convert the searchTerm to lowercase for case-insensitive search
+      searchTerm = searchTerm.toLowerCase();
+
+      // Create an array to store the matched results
+      const results = [];
+
+      TaskPlanner.forEach((task) => {
+        if (options === "Task_Name") {
+          if (task.taskName.toLowerCase().includes(searchTerm)) {
+            results.push(task);
+          }
+        } else if (options === "SubTask_Name") {
+          var Subtask = [];
+          task.subTasks.forEach((subTask) => {
+            if (subTask.s_title.toLowerCase().includes(searchTerm)) {
+              console.log("Subtask Found:", subTask.s_title);
+              // Create a new task object with the matching subtask
+              Subtask.push(subTask);
+            }
+          });
+          if (Subtask.length != 0) {
+            const newTask = {
+              ...task,
+              subTasks: Subtask,
+            };
+            results.push(newTask);
+          }
+        } else if (options === "Start_Date") {
+          var Subtask = [];
+          task.subTasks.forEach((subTask) => {
+            if (subTask.s_startDate === searchTerm) {
+              console.log("Subtask Found:", subTask.s_title);
+              // Create a new task object with the matching subtask
+              Subtask.push(subTask);
+            }
+          });
+          if (Subtask.length != 0) {
+            const newTask = {
+              ...task,
+              subTasks: Subtask,
+            };
+            results.push(newTask);
+          }
+        } else if (options === "End_Date") {
+          var Subtask = [];
+          task.subTasks.forEach((subTask) => {
+            if (subTask.s_endDate === searchTerm) {
+              console.log("Subtask Found:", subTask.s_title);
+              // Create a new task object with the matching subtask
+              Subtask.push(subTask);
+            }
+          });
+          if (Subtask.length != 0) {
+            const newTask = {
+              ...task,
+              subTasks: Subtask,
+            };
+            results.push(newTask);
+          }
+        }
+      });
+
+      return results;
+    }
+
+    function resetSearch() {
+
+      document.getElementById("search_by").selectedIndex = 0;
+      searchBox.value = "";
+      searchOption = "";
+      searchDate.style.display = "none";
+      searchTextbox.style.display = "";
+      searchBox.disabled = true;
+      searchBox.placeholder = "Select options in dropdown to search";
+      showNoResults("both");
+      createAccordion(TaskPlanner);
+    }
+  </script>
+  <script src="./js/editTask.js"></script>
+  <script src="./js/navBar.js"></script>
+  <script src="./js/calendar.js"></script>
+  <script src="./js/addTask.js"></script>
+  <script src="./js/deleteTask.js"></script>
+  <script src="./js/addSingleSubTask.js"></script>
+  <script src="./js/accordion.js"></script>
 </html>

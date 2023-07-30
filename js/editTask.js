@@ -46,6 +46,11 @@ function editSubTask() {
   const endDate = document.getElementById("edit_end_date").value;
   const status = document.getElementById("edit_status").value;
 
+  if (subTaskTitle.trim() === "" || startDate.trim() === "" || endDate.trim() === "" || status.trim() === "") {
+    return false;
+  }
+  
+
   const updatedSubTask = {
     s_id: editsubTaskId,
     s_title: subTaskTitle,
@@ -56,7 +61,7 @@ function editSubTask() {
 
   editSubtask(editTaskName, editsubTaskId, updatedSubTask);
   CancelEdit();
-  createAccordion();
+  createAccordion(TaskPlanner);
 }
 
 function editSubtask(taskId, subtaskId, updatedSubtask) {

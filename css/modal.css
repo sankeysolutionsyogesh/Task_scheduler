@@ -115,9 +115,9 @@
     font-weight: 700;
   }
   
-  input[type=submit]:hover, input[type=button] {
+  /* input[type=submit]:hover, input[type=button] {
     background-color: #0de48aa8;
-  }
+  } */
 
   @media screen and (max-width: 768px) {
     .view-Details {

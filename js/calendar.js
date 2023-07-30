@@ -1,7 +1,6 @@
 function enableEndDate(start_date, end_date) {
   var startDateInput = document.getElementById(start_date);
   var endDateInput = document.getElementById(end_date);
-    alert("Yogesh")
   if (startDateInput.value !== "") {
     endDateInput.min = startDateInput.value;
     endDateInput.disabled = false;
