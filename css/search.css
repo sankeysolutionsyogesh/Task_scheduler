@@ -6,3 +6,10 @@
 #search_date {
     display: "none";
 }
+
+
+.text-center{
+    /* display: block; */
+    text-align: center;
+}
+

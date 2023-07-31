@@ -1,6 +1,7 @@
 var taskTaskName = null;
 var DeletesubTaskTitle = null;
 var DeletesubTaskID = null;
+
 function DeleteModal(taskName, s_id, s_title) {
   taskTaskName = taskName;
   DeletesubTaskTitle = s_title;
@@ -23,13 +24,18 @@ function CancelDelete() {
 
 // Function to delete a subtask
 function ConfirmDelete() {
-  TaskPlanner.forEach((task) => {
-    if (task.taskName == taskTaskName) {
-      task.subTasks = task.subTasks.filter(
-        (subTask) => subTask.s_id !== DeletesubTaskID
-      );
+  const task = TaskPlanner.find((task) => task.taskName === taskTaskName);
+  if (task) {
+    const subtask = task.subTasks.find((subtask) => subtask.s_id === DeletesubTaskID);
+
+    if (subtask) {
+      // Find the index of the subtask in the array
+      const subtaskIndex = task.subTasks.indexOf(subtask);
+
+      //Previous subtask index, remove 1
+      task.subTasks.splice(subtaskIndex, 1);
     }
-  });
+  }
 
   createAccordion(TaskPlanner);
   CancelDelete();

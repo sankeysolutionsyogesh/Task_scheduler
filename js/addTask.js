@@ -39,8 +39,7 @@ function addTaskwithoutSubtask() {
   const Tasknamevalue = document.getElementById("task_name");
   const taskName = Tasknamevalue.value.trim();
   if (taskName === "") {
-    // alert("Please enter a valid Task Name.");
-    return;
+    return false;
   }
 
   const newTask = {
@@ -58,7 +57,6 @@ function addTaskwithoutSubtask() {
 
   if (!isDuplicate) {
     if (Temp_TaskPlanner.length != 0) {
-      console.log("Result ", Temp_TaskPlanner, "Other ", TaskPlanner);
       Temp_TaskPlanner.forEach((obj) => TaskPlanner.push(obj));
     } else {
       TaskPlanner.push(newTask);
@@ -72,8 +70,6 @@ function addTaskwithoutSubtask() {
 }
 
 function addNewSubTask() {
-  const Tasknamevalue = document.getElementById("task_name");
-  const taskName = Tasknamevalue.value.trim();
   const subTaskNameInput = document.getElementById("sub_task_name");
   const subTaskName = subTaskNameInput.value.trim();
 
@@ -84,7 +80,6 @@ function addNewSubTask() {
   const startDate = startDateInput.value;
   const endDate = endDateInput.value;
   const status = statusDropdown.value;
-  const selectedTaskIndex = Temp_TaskPlanner.length - 1;
 
   if (
     subTaskName === "" ||
@@ -105,30 +100,27 @@ function addNewSubTask() {
 
   Temp_TaskPlanner[0].subTasks.push(newSubTask);
   addRow(newSubTask);
+  
+  //Reset subtask form
   var SubTaskformData = document.getElementById("form_subtaskname");
   SubTaskformData.reset();
+
   const end_date = document.getElementById("end_date");
   end_date.disabled = true;
   const status_dropdown = document.getElementById("status");
   status_dropdown.disabled = true;
 }
-
+//To add the previous subtask added details in sentence.
 function addRow(newSubTask) {
   const pElement = document.createElement("p");
-
-  // Construct a human-readable sentence using HTML tags and CSS class
   const newSubTaskSentence = `Subtask with ID <span class="highlighted">${newSubTask.s_id}</span>, titled "<span class="highlighted">${newSubTask.s_title}</span>", has status "<span class="highlighted">${newSubTask.s_status}</span>", starting on <span class="highlighted">${newSubTask.s_startDate}</span>, and ending on <span class="highlighted">${newSubTask.s_endDate}</span>.`;
-
-  // Set the innerHTML of the <p> element to the newSubTaskSentence
   pElement.innerHTML = newSubTaskSentence;
 
-  // Get the output div
   const outputDiv = document.getElementById("output");
-
-  // Append the <p> element to the output div
   outputDiv.appendChild(pElement);
 }
 
+//To reset all the forms and make the addView side in inital view
 function clearOutput() {
   const outputDiv = document.getElementById("output");
   while (outputDiv.firstChild) {
@@ -148,6 +140,3 @@ function clearOutput() {
   formSubTaskname.style.display = "none";
 }
 
-function prevent(event) {
-  event.preventDefault();
-}

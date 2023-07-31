@@ -1,45 +1,46 @@
+const accordionContainer = document.getElementById("accordion-container");
 function removeAccordion() {
-    const accordionContainer = document.getElementById("accordion-container");
+  return new Promise((resolve) => {
     while (accordionContainer.firstChild) {
       accordionContainer.removeChild(accordionContainer.firstChild);
     }
-  }
+    resolve();
+  });
+}
 
-  function createAccordion(Result) {
-    removeAccordion();
-    console.log("Result-", Result)
-    const accordionContainer = document.getElementById("accordion-container");
+async function createAccordion(Result) {
+  //Remove the items in accordion so it should be repeated.
+  await removeAccordion();
+  Result.forEach((task) => {
+    const accordionItem = document.createElement("div");
+    accordionItem.className = "accordion-item";
 
+    //accordion header part
+    const accordionItemHeader = document.createElement("div");
+    accordionItemHeader.className = "accordion-item-header";
 
-    Result.forEach((task) => {
-      const accordionItem = document.createElement("div");
-      accordionItem.className = "accordion-item";
+    //Task Name
+    const taskNameElement = document.createElement("span");
+    taskNameElement.innerText = `${task.taskId}. ${task.taskName}`;
 
-      const accordionItemHeader = document.createElement("div");
-      accordionItemHeader.className = "accordion-item-header";
+    // add Button
+    const addButton = document.createElement("button");
+    addButton.innerHTML = '<i class="fas fa-plus"></i>';
+    addButton.className = "add-button";
+    addButton.addEventListener("click", () => {
+      AddModal(task, task.taskName);
+    });
 
-      // Create the task name and the "Add" button elements
-      const taskNameElement = document.createElement("span");
-      taskNameElement.innerText = `${task.taskId}. ${task.taskName}`;
+    // Append taskname and add Button in header
+    accordionItemHeader.appendChild(taskNameElement);
+    accordionItemHeader.appendChild(addButton);
 
-      const addButton = document.createElement("button");
-      addButton.innerHTML = '<i class="fas fa-plus"></i>'; // Add the Font Awesome icon here
+    //accordion body part
+    const accordionItemContent = document.createElement("div");
+    accordionItemContent.className = "accordion-item-content";
 
-      addButton.className = "add-button";
-
-      addButton.addEventListener("click", () => {
-        AddModal(task,task.taskName);
-      });
-
-      // Append the task name and "Add" button elements to the header
-      accordionItemHeader.appendChild(taskNameElement);
-      accordionItemHeader.appendChild(addButton);
-
-      const accordionItemContent = document.createElement("div");
-      accordionItemContent.className = "accordion-item-content";
-
-      const table = document.createElement("table");
-      table.innerHTML = `
+    const table = document.createElement("table");
+    table.innerHTML = `
     <tr>
       <th>Title</th>
       <th>Status</th>
@@ -49,60 +50,63 @@ function removeAccordion() {
     </tr>
   `;
 
-      task.subTasks.forEach((subTask) => {
-        const row = document.createElement("tr");
+    task.subTasks.forEach((subTask) => {
+      const row = document.createElement("tr");
 
-        // Check the subtask status and apply appropriate styles
-        if (subTask.s_status === "Completed") {
-          row.style.backgroundColor = "#00cc66";
-          row.style.textDecoration = "line-through";
-        } else if (subTask.s_status === "In Progress") {
-          row.style.backgroundColor = "#66b2ff";
-        } else if (subTask.s_status === "Due Passed") {
-          row.style.backgroundColor = "#ff9933";
-        } else if (subTask.s_status === "Cancelled") {
-          row.style.backgroundColor = "#bfbfbf";
-        }
+      // Check the status and apply background color according to it.
+      if (subTask.s_status === "Completed") {
+        row.style.backgroundColor = "#00cc66";
+        row.style.textDecoration = "line-through";
+      } else if (subTask.s_status === "In Progress") {
+        row.style.backgroundColor = "#66b2ff";
+      } else if (subTask.s_status === "Due Passed") {
+        row.style.backgroundColor = "#ff9933";
+      } else if (subTask.s_status === "Cancelled") {
+        row.style.backgroundColor = "#bfbfbf";
+      }
 
-        row.innerHTML = `
+      const formattedStartDate = moment(subTask.s_startDate).format(
+        "DD/MMMM/YYYY"
+      );
+
+      const formattedEndDate = moment(subTask.s_endDate).format("DD/MMMM/YYYY");
+
+      row.innerHTML = `
       <td>${subTask.s_title}</td>
       <td>${subTask.s_status}</td>
-      <td>${subTask.s_startDate}</td>
-      <td>${subTask.s_endDate}</td>
+      <td>${formattedStartDate}</td>
+      <td>${formattedEndDate}</td>
       <td>
           <button class="delete-button"> <i class="fas fa-trash-alt"></i> </button>
           <button class="edit-button"> <i class="fas fa-edit"></i></button>
       </td>
     `;
-        table.appendChild(row);
+      // Add each row in table
+      table.appendChild(row);
 
-        // Event listener for the Edit button
-        const editButton = row.querySelector(".edit-button");
-        editButton.addEventListener("click", () => {
-          // Handle edit functionality here
-         
-          EditModal(subTask,task.taskName);
-        });
-
-        // Event listener for the Delete button
-        const deleteButton = row.querySelector(".delete-button");
-        deleteButton.addEventListener("click", () => {
-          // Handle delete functionality here
-          
-          DeleteModal(task.taskName, subTask.s_id, subTask.s_title);
-        });
+      // Event listener for the Edit button
+      const editButton = row.querySelector(".edit-button");
+      editButton.addEventListener("click", () => {
+        EditModal(subTask, task.taskName);
       });
 
-      accordionItemContent.appendChild(table);
-
-      accordionItem.appendChild(accordionItemHeader);
-      accordionItem.appendChild(accordionItemContent);
-      accordionContainer.appendChild(accordionItem);
-
-      // Event listener to toggle accordion items
-      accordionItemHeader.addEventListener("click", () => {
-        accordionItemContent.classList.toggle("active");
-        accordionItemHeader.classList.toggle("active");
+      // Event listener for the Delete button
+      const deleteButton = row.querySelector(".delete-button");
+      deleteButton.addEventListener("click", () => {
+        DeleteModal(task.taskName, subTask.s_id, subTask.s_title);
       });
     });
-  }
+
+    accordionItemContent.appendChild(table);
+
+    accordionItem.appendChild(accordionItemHeader);
+    accordionItem.appendChild(accordionItemContent);
+    accordionContainer.appendChild(accordionItem);
+
+    //When click on header, content should be toggle in active. It adds active class
+    accordionItemHeader.addEventListener("click", () => {
+      accordionItemContent.classList.toggle("active");
+      accordionItemHeader.classList.toggle("active");
+    });
+  });
+}

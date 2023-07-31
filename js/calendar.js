@@ -10,29 +10,27 @@ function enableEndDate(start_date, end_date) {
   }
 }
 
-function enableStatusDropdown(endDate, status) {
-  var endDateInput = document.getElementById(endDate);
+function enableStatusDropdown(InputendDate, status) {
+  var endDateInput = document.getElementById(InputendDate);
 
   const statusDropdown = document.getElementById(status);
-  var currentDate = moment().format("YYYY-MM-DD");
-  console.log(currentDate);
+  var currentDate = new Date(moment().format("YYYY-MM-DD"));
 
+  //End Date is entered then remove disabled of dropdown and make value blank
   statusDropdown.disabled = false;
-  console.log(endDateInput.value);
-
   statusDropdown.value = "";
+  
+  const endDate = new Date(endDateInput.value);
 
-  if (endDateInput.value >= currentDate) {
+  if (endDate >= currentDate) {
     statusDropdown.options[3].disabled = true;
     statusDropdown.options[1].disabled = false;
-
     return;
   }
-  if (endDateInput.value < currentDate) {
+
+  if (endDate < currentDate) {
     statusDropdown.options[1].disabled = true;
     statusDropdown.options[3].disabled = false;
-
     return;
-    // Code to be executed if condition1 is false and condition2 is true
   }
 }

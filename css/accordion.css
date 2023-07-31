@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
 }
+
 .accordion-item-header {
     background-color: #f1f1f1;
     padding: 10px;
@@ -17,11 +18,13 @@
 .accordion-item-content {
     display: none;
     padding: 10px;
+
 }
 
 
 .accordion-item-content.active {
     display: block;
+    overflow-x: auto;
 }
 
 
@@ -30,6 +33,7 @@ table {
     border-collapse: collapse;
     width: 100%;
     font-size: 20px;
+    overflow-y: auto;
 }
 
 th,
@@ -111,3 +115,4 @@ td {
     cursor: pointer;
     border-radius: 4px;
 }
+

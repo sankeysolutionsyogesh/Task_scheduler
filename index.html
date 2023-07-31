@@ -22,7 +22,6 @@
       href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap"
       rel="stylesheet"
     />
- 
   </head>
 
   <body>
@@ -36,9 +35,9 @@
 
     <div id="add_task">
       <!-- Main Task  -->
-      <form id="form_taskname" onsubmit="prevent(event)">
+      <form id="form_taskname" onsubmit="event.preventDefault()">
         <div>
-          <label for="lname">Task Name:</label>
+          <label for="task_name">Task Name:</label>
           <input
             type="text"
             id="task_name"
@@ -74,7 +73,7 @@
       <form
         id="form_subtaskname"
         style="display: none"
-        onsubmit="prevent(event)"
+        onsubmit="event.preventDefault()"
       >
         <div>
           <label for="lname">Sub_task Name:</label>
@@ -127,7 +126,9 @@
       <div id="output"></div>
     </div>
 
+    <!----------------- View Side ------------------------->
     <div id="view_task" style="display: none">
+      <!-- Search options -->
       <div class="search_options">
         <div id="search_option">
           <select id="search_by" required>
@@ -161,11 +162,15 @@
           />
         </div>
       </div>
+
+      <!-- Accordion to display the Task -->
       <div id="accordion-container"></div>
-      <div id="NoResultView" style="display: none; text-align: center">
+
+      <!-- Actions to taken when searching -->
+      <div id="no_result_found" class="text-center">
         <h1>No result found!</h1>
       </div>
-      <div id="Loading" style="display: none; text-align: center">
+      <div id="loading" class="text-center">
         <h1>Loading ...</h1>
       </div>
     </div>
@@ -204,7 +209,7 @@
           <h2 id="addNewTaskName">Task Name -</h2>
           <h3 id="addNewSubTaskID">Sub Task ID -</h3>
         </div>
-        <form id="new_form_subtaskname" onsubmit="prevent(event)">
+        <form id="new_form_subtaskname" onsubmit="event.preventDefault()">
           <div>
             <label for="new_sub_task_name">Sub_task Name:</label>
             <input
@@ -267,7 +272,7 @@
       <div class="modal-content edit-Modal">
         <!-- <span class="close-btn" id="closeModalBtn">&times;</span> -->
 
-        <form id="form_subtaskname" onsubmit="prevent(event)">
+        <form id="form_subtaskname" onsubmit="event.preventDefault()">
           <h2>Edit SubTask</h2>
           <div>
             <label for="lname">Sub_task Name:</label>
@@ -352,7 +357,44 @@
     ];
 
 
+    const numbers = [1, 2, 3, 4, 5];
+const evenNumbers = numbers.map((num) => {
+  "yogesh"
+});
+
+
+  // var data = [{
+  //   name : "Yogesh"
+  // }];
+
+  // var data1 = [{
+  //   name:"dojf"
+  // }]
+
+  // var Data2 = [{
+  //   name:"kajsdnakj", std:"kdjsf"
+  // }]
+
+  // var newaerra = data.concat()
+  // console.log(newaerra)
+  const orders = [
+  { name:"Raju" },
+ 
+];
+
+const orders1 = [
+  { name:"Yogesh" },
+ 
+];
+
+const orders3 = [
+...orders, ...orders1
+];
+
+console.log(orders3); // Output: 450 (100 + 200 + 150)
   </script>
+
+ 
   <script src="./js/editTask.js"></script>
   <script src="./js/navBar.js"></script>
   <script src="./js/calendar.js"></script>
@@ -361,7 +403,8 @@
   <script src="./js/addSingleSubTask.js"></script>
   <script src="./js/accordion.js"></script>
   <script src="./js/searchOperation.js"></script>
+
+
   <!-- moment.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
 </html>

@@ -36,8 +36,7 @@ searchByDate.addEventListener("change", function (event) {
   console.log("asdlkfmnds", dateis);
   const Results = searchFunction(searchOption, dateis);
   if (Results.length > 0) {
-    const Loading = document.getElementById("Loading");
-    Loading.style.display = "none";
+    showNoResults("both");
     createAccordion(Results);
   } else {
     showNoResults(true);
@@ -51,14 +50,12 @@ searchBox.addEventListener("keyup", function (event) {
 
   delayTimer = setTimeout(function () {
     if (inputValue.length == 0) {
-      const Loading = document.getElementById("Loading");
-      Loading.style.display = "none";
+      showNoResults("both");
       createAccordion(TaskPlanner);
     } else {
       const Results = searchFunction(searchOption, inputValue);
       if (Results.length > 0) {
-        const Loading = document.getElementById("Loading");
-        Loading.style.display = "none";
+        showNoResults("both");
         createAccordion(Results);
       } else {
         showNoResults(true);
@@ -69,8 +66,8 @@ searchBox.addEventListener("keyup", function (event) {
 
 function showNoResults(data) {
   removeAccordion();
-  const NoResultView = document.getElementById("NoResultView");
-  const Loading = document.getElementById("Loading");
+  const NoResultView = document.getElementById("no_result_found");
+  const Loading = document.getElementById("loading");
 
   if (data === "both") {
     Loading.style.display = "none";
@@ -87,7 +84,6 @@ function showNoResults(data) {
 }
 
 function searchFunction(options, searchTerm) {
-  //   console.log("date", searchOption, inputData);
   // Convert the searchTerm to lowercase for case-insensitive search
   searchTerm = searchTerm.toLowerCase();
 
@@ -103,8 +99,6 @@ function searchFunction(options, searchTerm) {
       var Subtask = [];
       task.subTasks.forEach((subTask) => {
         if (subTask.s_title.toLowerCase().includes(searchTerm)) {
-          console.log("Subtask Found:", subTask.s_title);
-          // Create a new task object with the matching subtask
           Subtask.push(subTask);
         }
       });
@@ -119,7 +113,6 @@ function searchFunction(options, searchTerm) {
       var Subtask = [];
       task.subTasks.forEach((subTask) => {
         if (subTask.s_startDate === searchTerm) {
-          console.log("Subtask Found:", subTask.s_title);
           // Create a new task object with the matching subtask
           Subtask.push(subTask);
         }
@@ -135,7 +128,6 @@ function searchFunction(options, searchTerm) {
       var Subtask = [];
       task.subTasks.forEach((subTask) => {
         if (subTask.s_endDate === searchTerm) {
-          console.log("Subtask Found:", subTask.s_title);
           // Create a new task object with the matching subtask
           Subtask.push(subTask);
         }

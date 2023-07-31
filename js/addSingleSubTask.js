@@ -1,10 +1,9 @@
 
-var AddNewSingleSubTask = null;
+var TaskID = null;
 var AddNewSingleSubTaskName = null;
 
 function AddModal(taskId, TaskName) {
-  console.log("ID", taskId);
-  AddNewSingleSubTask = taskId.taskId;
+  TaskID = taskId.taskId;
   AddNewSingleSubTaskName = TaskName;
 
   const addNewTaskName = document.getElementById("addNewTaskName");
@@ -17,7 +16,7 @@ function AddModal(taskId, TaskName) {
 }
 
 function CancelAddModal() {
-  AddNewSingleSubTask = null;
+  TaskID = null;
   AddNewSingleSubTaskName = null;
   document.getElementById("addTaskModal").style.display = "none";
 }
@@ -41,19 +40,18 @@ function addNewSingleSubTask() {
     s_endDate: endDate,
   };
 
+  //It finds ID in TaskPlanner. It returns find match value or else returns undefined
   const selectedTask = TaskPlanner.find(
-    (task) => task.taskId === AddNewSingleSubTask
+    (task) => task.taskId === TaskID
   );
 
   if (selectedTask) {
-    // If the task exists, add the new subtask to its subTasks array
     newSubTask.s_id = selectedTask.subTasks.length;
     selectedTask.subTasks.push(newSubTask);
     alert(`Added new subTask in ${AddNewSingleSubTaskName}`)
   } else {
-    alert(`Task with ID ${AddNewSingleSubTask} not found.`)
+    alert(`Task with ID ${TaskID} not found.`)
   }
   createAccordion(TaskPlanner) 
   CancelAddModal() 
-//   console.log(TaskPlanner)
 }
