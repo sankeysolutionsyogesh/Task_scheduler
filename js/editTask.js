@@ -76,7 +76,6 @@ function editSubtask(taskName, subtaskId, updatedSubtask) {
   const task = TaskPlanner.find((task) => task.taskName === taskName);
   if (task) {
     const subtask = task.subTasks.find((subtask) => subtask.s_id === subtaskId);
-
     if (subtask) {
       // This is spread operator
       const updatedSubtaskObject = { ...subtask, ...updatedSubtask };

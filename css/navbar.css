@@ -40,5 +40,58 @@ body {
   background-color: #7cd87f;
   height: 100%;
   cursor: pointer;
+  flex: 1
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action_menu{
   flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+#add_task {
+  /* height: 70vh; */
+  margin-top: 3%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+
+#view_task{
+  margin-top: 1%;
+}
+
+@media screen and (max-width: 480px) {
+  .nav_bar {
+    flex-direction: column;
+  }
+
+  .add_bar {
+    padding: 6px;
+  }
+
+  .view_bar {
+    padding: 6px;
+  }
+
+  #add_task {
+    /* height: 70vh; */
+    margin-top: 10%;
+    align-items: initial;
+    padding: 0px 10px;
+
+  }
+  
+  #view_task{
+    margin-top: 10%;
+  }
 }

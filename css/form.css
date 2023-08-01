@@ -11,15 +11,6 @@ input[type=date] {
   box-sizing: border-box;
 }
 
-#add_task {
-  /* height: 70vh; */
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-}
 
 #form_subtaskname {
   display: flex;
@@ -29,4 +20,13 @@ input[type=date] {
 
 #new_form_subtaskname {
   margin-top: 20px;
+}
+
+#output p{
+  text-align: justify;
+  margin-top: 10px;
+}
+
+@media screen and (max-width: 480px) {
+ 
 }

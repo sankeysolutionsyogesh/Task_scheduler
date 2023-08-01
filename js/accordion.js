@@ -19,9 +19,14 @@ async function createAccordion(Result) {
     const accordionItemHeader = document.createElement("div");
     accordionItemHeader.className = "accordion-item-header";
 
-    //Task Name
+    // Task Name
     const taskNameElement = document.createElement("span");
     taskNameElement.innerText = `${task.taskId}. ${task.taskName}`;
+
+    // Task Count
+    const taskCountElement = document.createElement("p");
+    taskCountElement.className = "circle";
+    taskCountElement.innerText = task.subTasks.length;
 
     // add Button
     const addButton = document.createElement("button");
@@ -32,7 +37,16 @@ async function createAccordion(Result) {
     });
 
     // Append taskname and add Button in header
-    accordionItemHeader.appendChild(taskNameElement);
+    // accordionItemHeader.appendChild(taskNameElement);
+
+    const taskHeaderWrapper = document.createElement("div");
+    taskHeaderWrapper.className = "task-header-wrapper";
+    taskHeaderWrapper.appendChild(taskNameElement);
+    taskHeaderWrapper.appendChild(taskCountElement);
+
+
+
+    accordionItemHeader.appendChild(taskHeaderWrapper);
     accordionItemHeader.appendChild(addButton);
 
     //accordion body part
@@ -66,16 +80,37 @@ async function createAccordion(Result) {
       }
 
       const formattedStartDate = moment(subTask.s_startDate).format(
-        "DD/MMMM/YYYY"
+        "DD/MMM/YYYY"
       );
 
-      const formattedEndDate = moment(subTask.s_endDate).format("DD/MMMM/YYYY");
+      const formattedEndDate = moment(subTask.s_endDate).format("DD/MMM/YYYY");
+
+      var endDatemessage = "";
+
+      checkMessage(subTask.s_endDate)
+      function checkMessage(end_date) {
+        const endDate = moment(end_date, "YYYY-MM-DD");
+        var currentDate = moment()
+
+        const daysDifference = endDate.diff(currentDate, 'days');
+
+        if (subTask.s_status != "Completed") {
+          if (daysDifference > 0) {
+            endDatemessage = `${daysDifference} days left`;
+          } else if (daysDifference < 0) {
+            endDatemessage = `${Math.abs(daysDifference)} days ago`;
+          } else {
+            endDatemessage = `Last day`;
+          }
+        }
+
+      }
 
       row.innerHTML = `
       <td>${subTask.s_title}</td>
       <td>${subTask.s_status}</td>
       <td>${formattedStartDate}</td>
-      <td>${formattedEndDate}</td>
+      <td><div class="endDateFormat"><p>${formattedEndDate}</p><p> ${endDatemessage}</p></div></td>
       <td>
           <button class="delete-button"> <i class="fas fa-trash-alt"></i> </button>
           <button class="edit-button"> <i class="fas fa-edit"></i></button>

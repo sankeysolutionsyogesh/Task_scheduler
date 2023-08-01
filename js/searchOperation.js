@@ -2,10 +2,12 @@ let delayTimer;
 var searchOption = "";
 const searchBySelect = document.getElementById("search_by");
 const searchBox = document.getElementById("search_box");
-const searchByDate = document.getElementById("search_by_Date");
+const searchByEndDate = document.getElementById("search_by_enddate");
+const searchByStartDate = document.getElementById("search_by_startdate");
 
 //Divs
-const searchDate = document.getElementById("search_date");
+const date_search_options = document.getElementById("date_search_options");
+
 const searchTextbox = document.getElementById("search_textbox");
 
 searchBySelect.addEventListener("change", function (event) {
@@ -13,12 +15,15 @@ searchBySelect.addEventListener("change", function (event) {
   console.log("Selected Value:", selectedValue);
   searchOption = selectedValue;
   if (selectedValue != "") {
-    if (selectedValue === "Start_Date" || selectedValue === "End_Date") {
-      searchDate.style.display = "";
+    if (selectedValue === "Duration") {
+      date_search_options.style.display = "flex";
       searchTextbox.style.display = "none";
-      searchByDate.value = null;
+      searchByStartDate.value = null;
+      searchByEndDate.value = null;
+
     } else {
-      searchDate.style.display = "none";
+      date_search_options.style.display = "none";
+      // searchDate.style.display = "none";
       searchTextbox.style.display = "";
 
       searchBox.disabled = false;
@@ -30,11 +35,48 @@ searchBySelect.addEventListener("change", function (event) {
   }
 });
 
-searchByDate.addEventListener("change", function (event) {
+searchByStartDate.addEventListener("change", function (event) {
+
   showNoResults(false);
-  const dateis = event.target.value;
-  console.log("asdlkfmnds", dateis);
-  const Results = searchFunction(searchOption, dateis);
+
+  const startDate = event.target.value;
+
+  const endDate = searchByEndDate.value
+  console.log("Check strta", endDate.length)
+
+
+  var Results = []
+  if (endDate.length > 0) {
+    Results = searchFunction(searchOption, `${startDate} to ${endDate}`)
+
+  } else {
+    Results = searchFunction("Start_Date", startDate)
+  }
+
+  if (Results.length > 0) {
+    showNoResults("both");
+    createAccordion(Results);
+  } else {
+    showNoResults(true);
+  }
+
+});
+
+searchByEndDate.addEventListener("change", function (event) {
+  showNoResults(false);
+  const startDate = searchByStartDate.value
+  console.log("Check strta", startDate.length)
+  const endDate = event.target.value;
+
+  var Results = []
+  if (startDate.length > 0) {
+   
+    Results = searchFunction(searchOption, `${startDate} to ${endDate}`)
+
+  } else {
+    Results = searchFunction("End_Date", endDate)
+  }
+
   if (Results.length > 0) {
     showNoResults("both");
     createAccordion(Results);
@@ -140,6 +182,22 @@ function searchFunction(options, searchTerm) {
         results.push(newTask);
       }
     }
+    else if (options === "Duration") {
+      const [startDate, endDate] = searchTerm.split(" to ");
+      var Subtask = [];
+      task.subTasks.forEach((subTask) => {
+        if (subTask.s_startDate >= startDate && subTask.s_endDate <= endDate) {
+          Subtask.push(subTask);
+        }
+      });
+      if (Subtask.length != 0) {
+        const newTask = {
+          ...task,
+          subTasks: Subtask,
+        };
+        results.push(newTask);
+      }
+    }
   });
 
   return results;
@@ -149,7 +207,8 @@ function resetSearch() {
   document.getElementById("search_by").selectedIndex = 0;
   searchBox.value = "";
   searchOption = "";
-  searchDate.style.display = "none";
+  date_search_options.style.display = "none";
+  // searchDate.style.display = "none";
   searchTextbox.style.display = "";
   searchBox.disabled = true;
   searchBox.placeholder = "Select options in dropdown to search";
