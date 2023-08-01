@@ -49,9 +49,12 @@ function addNewSingleSubTask() {
     newSubTask.s_id = selectedTask.subTasks.length;
     selectedTask.subTasks.push(newSubTask);
     alert(`Added new subTask in ${AddNewSingleSubTaskName}`)
+    var NewSubTaskformData = document.getElementById("new_form_subtaskname");
+    NewSubTaskformData.reset();
+    createAccordion(TaskPlanner) 
+    CancelAddModal() 
   } else {
     alert(`Task with ID ${TaskID} not found.`)
   }
-  createAccordion(TaskPlanner) 
-  CancelAddModal() 
+
 }
