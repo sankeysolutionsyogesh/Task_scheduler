@@ -7,7 +7,7 @@ const searchByStartDate = document.getElementById("search_by_startdate");
 
 //Divs
 const date_search_options = document.getElementById("date_search_options");
-
+const status_search_options = document.getElementById("status_search_options");
 const searchTextbox = document.getElementById("search_textbox");
 
 searchBySelect.addEventListener("change", function (event) {
@@ -17,15 +17,20 @@ searchBySelect.addEventListener("change", function (event) {
   if (selectedValue != "") {
     if (selectedValue === "Duration") {
       date_search_options.style.display = "flex";
+      status_search_options.style.display = "none"
       searchTextbox.style.display = "none";
       searchByStartDate.value = null;
       searchByEndDate.value = null;
 
+    } else if (selectedValue === "Status"){
+      date_search_options.style.display = "none";
+      status_search_options.style.display = ""
+      searchTextbox.style.display = "none";
     } else {
       date_search_options.style.display = "none";
       // searchDate.style.display = "none";
       searchTextbox.style.display = "";
-
+      status_search_options.style.display = "none"
       searchBox.disabled = false;
       searchBox.placeholder = "Search for " + selectedValue;
       searchBox.value = "";
@@ -85,6 +90,35 @@ searchByEndDate.addEventListener("change", function (event) {
   }
 });
 
+const checkedValues = [];
+
+function handleCheckboxChange(checkbox) {
+  const value = checkbox.value;
+
+  if (checkbox.checked) {
+    // Add the value to the checkedValues array if checked
+    if (!checkedValues.includes(value)) {
+      checkedValues.push(value);
+    }
+  } else {
+    // Remove the value from the checkedValues array if unchecked
+    const index = checkedValues.indexOf(value);
+    if (index !== -1) {
+      checkedValues.splice(index, 1);
+    }
+  }
+
+  const Results = searchFunction(searchOption,"" ,checkedValues);
+  if (Results.length > 0) {
+    showNoResults("both");
+    createAccordion(Results);
+  } else {
+    showNoResults(true);
+  }
+  // Display the current checkedValues array
+  // console.log("Checked values:", checkedValues);
+}
+
 searchBox.addEventListener("keyup", function (event) {
   showNoResults(false);
   clearTimeout(delayTimer);
@@ -125,9 +159,11 @@ function showNoResults(data) {
   }
 }
 
-function searchFunction(options, searchTerm) {
+function searchFunction(options, searchTerm, statusArray=[]) {
   // Convert the searchTerm to lowercase for case-insensitive search
   searchTerm = searchTerm.toLowerCase();
+
+  const lowerCaseStatusArray = statusArray.map((status) => status.toLowerCase());
 
   // Create an array to store the matched results
   const results = [];
@@ -190,6 +226,22 @@ function searchFunction(options, searchTerm) {
           Subtask.push(subTask);
         }
       });
+     
+      if (Subtask.length != 0) {
+        const newTask = {
+          ...task,
+          subTasks: Subtask,
+        };
+        results.push(newTask);
+      }
+    }  else if (options === "Status") {
+      var Subtask = [];
+      task.subTasks.forEach((subTask) => {
+        if (lowerCaseStatusArray.includes(subTask.s_status.toLowerCase())) {
+          Subtask.push(subTask);
+        }
+      });
+      console.log("Subtask", Subtask)
       if (Subtask.length != 0) {
         const newTask = {
           ...task,
@@ -208,10 +260,18 @@ function resetSearch() {
   searchBox.value = "";
   searchOption = "";
   date_search_options.style.display = "none";
-  // searchDate.style.display = "none";
+  status_search_options.style.display = "none";
   searchTextbox.style.display = "";
   searchBox.disabled = true;
   searchBox.placeholder = "Select options in dropdown to search";
   showNoResults("both");
+  resetCheckboxes()
   createAccordion(TaskPlanner);
+}
+
+function resetCheckboxes() {
+  const checkboxes = document.querySelectorAll('.dropdown-item input[type="checkbox"]');
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+  });
 }

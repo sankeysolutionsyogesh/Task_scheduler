@@ -91,12 +91,16 @@
           <option value="Task_Name">Task Name</option>
           <option value="SubTask_Name">SubTask Name</option>
           <option value="Duration">Duration</option>
+          <option value="Status">Status</option>
         </select>
       </div>
+      <!-- Search by taskname or subtask name -->
       <div id="search_textbox">
         <input type="text" id="search_box" name="search_box" placeholder="Select options in dropdown to search" required
           disabled />
       </div>
+
+      <!-- Search by Dates -->
       <div id="date_search_options" class="date_search_style">
         <div>
           <label>Select Start date</label>
@@ -106,6 +110,29 @@
           <label>Select End date</label>
           <input type="date" id="search_by_enddate" required />
         </div>
+      </div>
+
+      <!-- Search by Status -->
+      <div id="status_search_options" style="display: none;">
+        <div class="dropdown-menu " id="dropdownMenu">
+          <div class="dropdown-item">
+            <input type="checkbox" value="In Progress" onchange="handleCheckboxChange(this)">
+            <label>In Progress</label>
+          </div>
+          <div class="dropdown-item">
+            <input type="checkbox" value="Completed" onchange="handleCheckboxChange(this)">
+            <label>Completed</label>
+          </div>
+          <div class="dropdown-item">
+            <input type="checkbox" value="Due Passed" onchange="handleCheckboxChange(this)">
+            <label>Due Passed</label>
+          </div>
+          <div class="dropdown-item">
+            <input type="checkbox" value="Cancelled" onchange="handleCheckboxChange(this)">
+            <label>Cancelled</label>
+          </div>
+        </div>
+
       </div>
       <div>
         <input type="button" onclick="resetSearch()" value="Reset" class="danger_color" />

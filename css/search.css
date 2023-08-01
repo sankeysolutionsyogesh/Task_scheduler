@@ -13,9 +13,11 @@
 
 #date_search_options{
     display: "none";  
-    
+}
 
-     
+#status_search_options{
+     display: "none"; 
+
 }
 
 .date_search_style{
@@ -24,16 +26,48 @@
     gap: 20px;
     text-align: center;
 }
+.status_search_style{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    text-align: center;   
+}
 
 .text-center{
     /* display: block; */
     text-align: center;
 }
 
+.dropdown-menu{
+    display: flex;
+    flex-direction: row;
+    gap:20px;
+
+}
+
+/* Add margin to the right of the checkbox */
+.dropdown-item input[type="checkbox"] {
+    margin-right: 10px;
+    /* Increase checkbox size */
+    width: 20px;
+    height: 20px;
+
+  }
+
+  /* Increase the size of the checkbox icon */
+  .dropdown-item input[type="checkbox"]::before {
+    width: 20px;
+    height: 20px;
+  }
+
+  .dropdown-item label{
+    font-size: 20px;
+    vertical-align: text-bottom;
+  }
 @media screen and (max-width: 480px) {
     .search_options {
        
-        justify-content: center;
+        /* justify-content: ; */
         padding: 0px 7px;
         gap: 4px;
     }
@@ -42,5 +76,17 @@
         flex-direction: column;
         gap: 10px;
     }
+
+    .dropdown-menu{
+        flex-direction: column;
+        gap:10px;
+
+    }
+    .dropdown-item input[type="checkbox"] {
+        margin-right: 1px;
+       
+    
+      }
+    
     
 }
